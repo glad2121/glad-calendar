@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<japanese-eras>
+  <japanese-era value="1" name="Meiji"  abbr="M" since="1868-01-01"/>
+  <japanese-era value="2" name="Taisho" abbr="T" since="1912-07-30"/>
+  <japanese-era value="3" name="Showa"  abbr="S" since="1926-12-25"/>
+  <japanese-era value="4" name="Heisei" abbr="H" since="1989-01-08"/>
+</japanese-eras>
