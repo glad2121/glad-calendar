@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2015 GLAD!! (ITO Yoshiichi)
+ * Copyright (C) 2008-2016 GLAD!! (ITO Yoshiichi)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,38 +53,74 @@ public class JapaneseEraTest {
 
     @Test
     public void testMeiji() {
-        JapaneseEra meiji = JapaneseEra.MEIJI;
-        assertThat(JapaneseEra.of(1)).isSameAs(meiji);
-        assertThat(JapaneseEra.valueOf("Meiji")).isSameAs(meiji);
-        assertThat(meiji.getValue()).isEqualTo(1);
-        assertThat(meiji.getName()).isEqualTo("Meiji");
-        assertThat(meiji.getAbbr()).isEqualTo("M");
-        assertThat(meiji.getSince()).isEqualTo(LocalDate.of(1868, 1, 1));
-        assertThat(meiji.getShortName()).isEqualTo("M");
-        assertThat(meiji.getShortName(Locale.US)).isEqualTo("M");
-        assertThat(meiji.getMediumName()).isEqualTo("明");
-        assertThat(meiji.getMediumName(Locale.US)).isEqualTo("M");
-        assertThat(meiji.getLongName()).isEqualTo("明治");
-        assertThat(meiji.getLongName(Locale.US)).isEqualTo("Meiji");
-        assertThat(meiji.toString()).isEqualTo("Meiji");
+        JapaneseEra era = JapaneseEra.MEIJI;
+        assertThat(JapaneseEra.of(1)).isSameAs(era);
+        assertThat(JapaneseEra.valueOf("Meiji")).isSameAs(era);
+        assertThat(era.getValue()).isEqualTo(1);
+        assertThat(era.getName()).isEqualTo("Meiji");
+        assertThat(era.getAbbr()).isEqualTo("M");
+        assertThat(era.getSince()).isEqualTo(LocalDate.of(1868, 1, 1));
+        assertThat(era.getShortName()).isEqualTo("M");
+        assertThat(era.getShortName(Locale.US)).isEqualTo("M");
+        assertThat(era.getMediumName()).isEqualTo("明");
+        assertThat(era.getMediumName(Locale.US)).isEqualTo("M");
+        assertThat(era.getLongName()).isEqualTo("明治");
+        assertThat(era.getLongName(Locale.US)).isEqualTo("Meiji");
+        assertThat(era.toString()).isEqualTo("Meiji");
     }
 
     @Test
     public void testTaisho() {
-        JapaneseEra taisho = JapaneseEra.TAISHO;
-        assertThat(taisho.getValue()).isEqualTo(2);
+        JapaneseEra era = JapaneseEra.TAISHO;
+        assertThat(JapaneseEra.of(2)).isSameAs(era);
+        assertThat(JapaneseEra.valueOf("Taisho")).isSameAs(era);
+        assertThat(era.getValue()).isEqualTo(2);
+        assertThat(era.getName()).isEqualTo("Taisho");
+        assertThat(era.getAbbr()).isEqualTo("T");
+        assertThat(era.getSince()).isEqualTo(LocalDate.of(1912, 7, 30));
+        assertThat(era.getShortName()).isEqualTo("T");
+        assertThat(era.getShortName(Locale.US)).isEqualTo("T");
+        assertThat(era.getMediumName()).isEqualTo("大");
+        assertThat(era.getMediumName(Locale.US)).isEqualTo("T");
+        assertThat(era.getLongName()).isEqualTo("大正");
+        assertThat(era.getLongName(Locale.US)).isEqualTo("Taisho");
+        assertThat(era.toString()).isEqualTo("Taisho");
     }
 
     @Test
     public void testShowa() {
-        JapaneseEra showa = JapaneseEra.SHOWA;
-        assertThat(showa.getValue()).isEqualTo(3);
+        JapaneseEra era = JapaneseEra.SHOWA;
+        assertThat(JapaneseEra.of(3)).isSameAs(era);
+        assertThat(JapaneseEra.valueOf("Showa")).isSameAs(era);
+        assertThat(era.getValue()).isEqualTo(3);
+        assertThat(era.getName()).isEqualTo("Showa");
+        assertThat(era.getAbbr()).isEqualTo("S");
+        assertThat(era.getSince()).isEqualTo(LocalDate.of(1926, 12, 25));
+        assertThat(era.getShortName()).isEqualTo("S");
+        assertThat(era.getShortName(Locale.US)).isEqualTo("S");
+        assertThat(era.getMediumName()).isEqualTo("昭");
+        assertThat(era.getMediumName(Locale.US)).isEqualTo("S");
+        assertThat(era.getLongName()).isEqualTo("昭和");
+        assertThat(era.getLongName(Locale.US)).isEqualTo("Showa");
+        assertThat(era.toString()).isEqualTo("Showa");
     }
 
     @Test
     public void testHeisei() {
-        JapaneseEra heisei = JapaneseEra.HEISEI;
-        assertThat(heisei.getValue()).isEqualTo(4);
+        JapaneseEra era = JapaneseEra.HEISEI;
+        assertThat(JapaneseEra.of(4)).isSameAs(era);
+        assertThat(JapaneseEra.valueOf("Heisei")).isSameAs(era);
+        assertThat(era.getValue()).isEqualTo(4);
+        assertThat(era.getName()).isEqualTo("Heisei");
+        assertThat(era.getAbbr()).isEqualTo("H");
+        assertThat(era.getSince()).isEqualTo(LocalDate.of(1989, 1, 8));
+        assertThat(era.getShortName()).isEqualTo("H");
+        assertThat(era.getShortName(Locale.US)).isEqualTo("H");
+        assertThat(era.getMediumName()).isEqualTo("平");
+        assertThat(era.getMediumName(Locale.US)).isEqualTo("H");
+        assertThat(era.getLongName()).isEqualTo("平成");
+        assertThat(era.getLongName(Locale.US)).isEqualTo("Heisei");
+        assertThat(era.toString()).isEqualTo("Heisei");
     }
 
     @Test

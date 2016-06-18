@@ -45,14 +45,29 @@ class JapaneseEras {
 
     // ---- constants
 
+    /**
+     * 設定ファイルのパス。
+     */
     static final String CONFIG_PATH = "japanese-eras.xml";
 
+    /**
+     * 明治から平成までの4件は必須。
+     */
     static final int MIN_SIZE = 4;
 
+    /**
+     * 値のオフセット（明治の値）。
+     */
     static final int OFFSET = 1;
 
+    /**
+     * リソースの名前。
+     */
     static final String RESOURCE_NAME = "japanese-eras";
 
+    /**
+     * リソースのキーの接頭辞。
+     */
     static final String PREFIX = "japanese-era.";
 
     // ---- fields
@@ -181,6 +196,12 @@ class JapaneseEras {
         throw new IllegalArgumentException("Invalid era name: " + name);
     }
 
+    /**
+     * 指定された日付の元号を返します。
+     *
+     * @param date 日付
+     * @return 元号
+     */
     public JapaneseEra get(LocalDate date) {
         Objects.requireNonNull(date, "date");
         for (ListIterator<JapaneseEra> i = eras.listIterator(); i.hasPrevious();) {
