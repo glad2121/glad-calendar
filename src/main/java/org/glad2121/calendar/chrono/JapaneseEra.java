@@ -39,22 +39,26 @@ public final class JapaneseEra
     /**
      * 明治 (1)。
      */
-    public static final JapaneseEra MEIJI = of(1);
+    public static final JapaneseEra MEIJI =
+            new JapaneseEra(1, "Meiji", "M", LocalDate.of(1868, 1, 1));
 
     /**
      * 大正 (2)。
      */
-    public static final JapaneseEra TAISHO = of(2);
+    public static final JapaneseEra TAISHO =
+            new JapaneseEra(2, "Taisho", "T", LocalDate.of(1912, 7, 30));
 
     /**
      * 昭和 (3)。
      */
-    public static final JapaneseEra SHOWA = of(3);
+    public static final JapaneseEra SHOWA =
+            new JapaneseEra(3, "Showa", "S", LocalDate.of(1926, 12, 25));
 
     /**
      * 平成 (4)。
      */
-    public static final JapaneseEra HEISEI = of(4);
+    public static final JapaneseEra HEISEI =
+            new JapaneseEra(4, "Heisei", "H", LocalDate.of(1989, 1, 8));
 
     // ---- fields
 
@@ -237,16 +241,6 @@ public final class JapaneseEra
         return JapaneseEras.INSTANCE.getFirstYearText();
     }
 
-    // ---- java.lang.Object
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return getName();
-    }
-
     // ---- java.lang.Comparable
 
     /**
@@ -255,6 +249,16 @@ public final class JapaneseEra
     @Override
     public int compareTo(JapaneseEra other) {
         return Integer.compare(value, other.value);
+    }
+
+    // ---- java.lang.Object
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return getName();
     }
 
     // ---- serialization

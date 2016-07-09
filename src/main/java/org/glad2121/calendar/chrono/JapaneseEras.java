@@ -51,11 +51,6 @@ class JapaneseEras {
     static final String CONFIG_PATH = "japanese-eras.xml";
 
     /**
-     * 明治から平成までの4件は必須。
-     */
-    static final int MIN_SIZE = 4;
-
-    /**
      * 値のオフセット（明治の値）。
      */
     static final int OFFSET = 1;
@@ -92,9 +87,7 @@ class JapaneseEras {
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
             SaxHandler handler = new SaxHandler();
             parser.parse(in, handler);
-            List<JapaneseEra> eras = handler.eras;
-            checkJapaneseEras(eras);
-            this.eras = Collections.unmodifiableList(eras);
+            this.eras = Collections.unmodifiableList(handler.eras);
         } catch (ParserConfigurationException e) {
             throw new CalendarException(e);
         } catch (SAXException e) {
@@ -118,32 +111,6 @@ class JapaneseEras {
             throw new CalendarException("Resource not found: " + name);
         }
         return in;
-    }
-
-    /**
-     * 元号の一覧をチェックします。
-     *
-     * @param eras 元号の一覧
-     */
-    void checkJapaneseEras(List<JapaneseEra> eras) {
-        int size = eras.size();
-        // MIN_SIZE 件以上登録されていること。
-        if (size < MIN_SIZE) {
-            throw new CalendarException("Invalid era size: " + size);
-        }
-
-        LocalDate prevSince = LocalDate.MIN;
-        for (int i = 0; i < size; ++i) {
-            JapaneseEra era = eras.get(i);
-            int value = era.getValue();
-            LocalDate since = era.getSince();
-            // 値が OFFSET から始まる連続値であること。
-            // 適用開始日順に整列されていること。
-            if (value != OFFSET + i || since.compareTo(prevSince) <= 0) {
-                throw new CalendarException("Invalid era config: " + era);
-            }
-            prevSince = since;
-        }
     }
 
     // ---- eras
@@ -197,20 +164,20 @@ class JapaneseEras {
     }
 
     /**
-     * 指定された日付の元号を返します。
+     * 指定された ISO ローカル日付の元号を返します。
      *
-     * @param date 日付
+     * @param isoDate ISO ローカル日付
      * @return 元号
      */
-    public JapaneseEra get(LocalDate date) {
-        Objects.requireNonNull(date, "date");
-        for (ListIterator<JapaneseEra> i = eras.listIterator(); i.hasPrevious();) {
+    public JapaneseEra get(LocalDate isoDate) {
+        Objects.requireNonNull(isoDate, "date");
+        for (ListIterator<JapaneseEra> i = eras.listIterator(eras.size()); i.hasPrevious();) {
             JapaneseEra era = i.previous();
-            if (era.getSince().compareTo(date) <= 0) {
+            if (era.getSince().compareTo(isoDate) <= 0) {
                 return era;
             }
         }
-        throw new DateTimeException("Unsupported date: " + date);
+        throw new DateTimeException("Unsupported iso date: " + isoDate);
     }
 
     // ---- localized names
@@ -324,6 +291,14 @@ class JapaneseEras {
     static class SaxHandler extends DefaultHandler {
 
         final List<JapaneseEra> eras = new ArrayList<>();
+        {
+            eras.add(JapaneseEra.MEIJI);
+            eras.add(JapaneseEra.TAISHO);
+            eras.add(JapaneseEra.SHOWA);
+            eras.add(JapaneseEra.HEISEI);
+        }
+
+        int index = 0;
 
         @Override
         public void startElement(String uri, String localName, String qName,
@@ -338,7 +313,26 @@ class JapaneseEras {
             String name = getValue(attrs, "name");
             String abbr = getValue(attrs, "abbr");
             LocalDate since = LocalDate.parse(getValue(attrs, "since"));
-            eras.add(new JapaneseEra(value, name, abbr, since));
+
+            if (index < eras.size()) {
+                JapaneseEra era = eras.get(index);
+                if (value != era.getValue()
+                        || !name.equals(era.getName())
+                        || !abbr.equals(era.getAbbr())
+                        || !since.equals(era.getSince())) {
+                    throw new CalendarException(String.format(
+                            "Invalid era config: %d (%s)", value, name));
+                }
+            } else {
+                JapaneseEra prev = eras.get(index - 1);
+                if (value != prev.getValue() + 1
+                        || since.compareTo(prev.getSince()) <= 0) {
+                    throw new CalendarException(String.format(
+                            "Invalid era config: %d (%s)", value, name));
+                }
+                eras.add(new JapaneseEra(value, name, abbr, since));
+            }
+            ++index;
         }
 
         String getValue(Attributes attrs, String qName) {

@@ -17,9 +17,11 @@ package org.glad2121.calendar.chrono;
 
 import static org.assertj.core.api.StrictAssertions.*;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Locale;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -67,6 +69,11 @@ public class JapaneseEraTest {
         assertThat(era.getLongName()).isEqualTo("明治");
         assertThat(era.getLongName(Locale.US)).isEqualTo("Meiji");
         assertThat(era.toString()).isEqualTo("Meiji");
+        assertThat(era.compareTo(JapaneseEra.MEIJI)).isEqualTo(0);
+        assertThat(era.compareTo(JapaneseEra.TAISHO)).isLessThan(0);
+        assertThat(era.compareTo(JapaneseEra.SHOWA)).isLessThan(0);
+        assertThat(era.compareTo(JapaneseEra.HEISEI)).isLessThan(0);
+        assertThat(SerializationUtils.clone(era)).isSameAs(era);
     }
 
     @Test
@@ -85,6 +92,11 @@ public class JapaneseEraTest {
         assertThat(era.getLongName()).isEqualTo("大正");
         assertThat(era.getLongName(Locale.US)).isEqualTo("Taisho");
         assertThat(era.toString()).isEqualTo("Taisho");
+        assertThat(era.compareTo(JapaneseEra.MEIJI)).isGreaterThan(0);
+        assertThat(era.compareTo(JapaneseEra.TAISHO)).isEqualTo(0);
+        assertThat(era.compareTo(JapaneseEra.SHOWA)).isLessThan(0);
+        assertThat(era.compareTo(JapaneseEra.HEISEI)).isLessThan(0);
+        assertThat(SerializationUtils.clone(era)).isSameAs(era);
     }
 
     @Test
@@ -103,6 +115,11 @@ public class JapaneseEraTest {
         assertThat(era.getLongName()).isEqualTo("昭和");
         assertThat(era.getLongName(Locale.US)).isEqualTo("Showa");
         assertThat(era.toString()).isEqualTo("Showa");
+        assertThat(era.compareTo(JapaneseEra.MEIJI)).isGreaterThan(0);
+        assertThat(era.compareTo(JapaneseEra.TAISHO)).isGreaterThan(0);
+        assertThat(era.compareTo(JapaneseEra.SHOWA)).isEqualTo(0);
+        assertThat(era.compareTo(JapaneseEra.HEISEI)).isLessThan(0);
+        assertThat(SerializationUtils.clone(era)).isSameAs(era);
     }
 
     @Test
@@ -121,6 +138,11 @@ public class JapaneseEraTest {
         assertThat(era.getLongName()).isEqualTo("平成");
         assertThat(era.getLongName(Locale.US)).isEqualTo("Heisei");
         assertThat(era.toString()).isEqualTo("Heisei");
+        assertThat(era.compareTo(JapaneseEra.MEIJI)).isGreaterThan(0);
+        assertThat(era.compareTo(JapaneseEra.TAISHO)).isGreaterThan(0);
+        assertThat(era.compareTo(JapaneseEra.SHOWA)).isGreaterThan(0);
+        assertThat(era.compareTo(JapaneseEra.HEISEI)).isEqualTo(0);
+        assertThat(SerializationUtils.clone(era)).isSameAs(era);
     }
 
     @Test
@@ -131,6 +153,30 @@ public class JapaneseEraTest {
         assertThat(values[1]).isSameAs(JapaneseEra.TAISHO);
         assertThat(values[2]).isSameAs(JapaneseEra.SHOWA);
         assertThat(values[3]).isSameAs(JapaneseEra.HEISEI);
+    }
+
+    @Test
+    public void testOf() {
+        assertThatThrownBy(() -> JapaneseEra.of(-1))
+            .isInstanceOf(DateTimeException.class)
+            .hasMessage("Invalid era value: -1");
+    }
+
+    @Test
+    public void testValueOf() {
+        assertThatThrownBy(() -> JapaneseEra.valueOf(null))
+            .isInstanceOf(NullPointerException.class);
+        assertThatThrownBy(() -> JapaneseEra.valueOf(""))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Invalid era name: ");
+        assertThatThrownBy(() -> JapaneseEra.valueOf("Keio"))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Invalid era name: Keio");
+    }
+
+    @Test
+    public void testFirstYearText() {
+        assertThat(JapaneseEra.getFirstYearText()).isEqualTo("元");
     }
 
 }
